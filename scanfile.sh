@@ -1,5 +1,10 @@
 #!/bin/bash
 function scandir() {
+	if [ -f $1 ] ; then
+		echo "$1 is a file"
+		echo $1 >> $2
+		return
+	fi
 	if ! [ -d $1 ] ; then
 		echo "$1 is not a dir"
 		return
