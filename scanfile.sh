@@ -1,11 +1,14 @@
 #!/bin/bash
 function scandir() {
-	if [ -f $1 ] ; then
+	local fpath="$1"
+	fpath=`echo "$1"|sed s/[[:space:]]/\\\\\ /g`
+	echo "fpath is : $fpath"
+	if [ -f "$fpath" ] ; then
 		echo "$1 is a file"
-		echo $1 >> $2
+		echo $fpath >> $2
 		return
 	fi
-	if ! [ -d $1 ] ; then
+	if ! [ -d $fpath ] ; then
 		echo "$1 is not a dir"
 		return
 	fi
@@ -19,20 +22,26 @@ function scandir() {
 		fi
 	done
 }
-if [ -z "$1" ] || [ -z "$2" ] ; then
+if [ -z "$2" ] ; then
+	outfile="output.txt"
+	echo $outfile
+else
+	outfile=$2
+fi
+if [ -z "$1" ] || [ -z "$outfile" ] ; then
 	echo "pls input two params"
 	exit 0
 fi
 echo "reading : "$1
 if [ -d $1 ] ; then
 	echo "as dir"
-	scandir $1 $2
+	scandir "$1" $outfile
 else
 	echo "as dir list"
 	cat $1 | while read line
 	do
 		echo "reading dir : "$line
-		scandir $line $2
+		scandir "$line" $outfile
 	done
 fi
-echo "read done. pls check $2"
+echo "read done. pls check $outfile"
