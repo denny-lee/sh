@@ -2,7 +2,7 @@
 function scandir() {
 	local fpath="$1"
 #	fpath=`echo "$1"|sed s/[[:space:]]/\\\\\\\\\\\\\ /g`
-	echo "fpath is : $fpath"
+#	echo "fpath is : $fpath"
 	if [ -f "$fpath" ] ; then
 		echo "$1 is a file"
 		echo $fpath >> $2
@@ -17,8 +17,10 @@ function scandir() {
 		if [ -d "$fpath/$file" ] ; then
 			echo $1"/"$file
 			scandir $1"/"$file $2
-		else
+		elif [ -f "$fpath/$file" ] ; then
 			echo $1"/"$file >> $2
+		else
+			echo "* cannot parse: $1/$file" >> $2
 		fi
 	done
 }
