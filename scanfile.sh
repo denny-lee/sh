@@ -1,20 +1,20 @@
 #!/bin/bash
 function scandir() {
 	local fpath="$1"
-	fpath=`echo "$1"|sed s/[[:space:]]/\\\\\ /g`
+#	fpath=`echo "$1"|sed s/[[:space:]]/\\\\\\\\\\\\\ /g`
 	echo "fpath is : $fpath"
 	if [ -f "$fpath" ] ; then
 		echo "$1 is a file"
 		echo $fpath >> $2
 		return
 	fi
-	if ! [ -d $fpath ] ; then
-		echo "$1 is not a dir"
+	if ! [ -d "$fpath" ] ; then
+		echo "$fpath is not a dir"
 		return
 	fi
-	for file in `ls $1`
+	for file in `ls "$fpath"`
 	do
-		if [ -d $1"/"$file ] ; then
+		if [ -d "$fpath/$file" ] ; then
 			echo $1"/"$file
 			scandir $1"/"$file $2
 		else
